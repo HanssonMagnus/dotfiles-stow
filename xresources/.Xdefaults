@@ -37,7 +37,7 @@
 
 URxvt.intensityStyles:	false
 URxvt.depth:		32
-URxvt.font: 		xft:Noto Mono:size=12
+URxvt.font: 		xft:NotoSansMono-Regular:size=10
 URxvt.scrollBar:	false
 URxvt.cursorColor:	white
 !URxvt.letterSpace: -1
