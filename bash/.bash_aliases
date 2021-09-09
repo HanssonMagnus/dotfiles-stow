@@ -14,6 +14,10 @@ alias reboot='sudo reboot'
 alias us='setxkbmap us'
 alias se='setxkbmap se'
 
+# i3
+alias i3r='i3-msg restart'
+alias xr='xrdb ~/.Xresources'
+
 # Pipe fzf std to vim
 alias ed='fzf | xargs -r vim --not-a-term'
 

@@ -14,11 +14,11 @@
 set $mod Mod4
 
 # Set variables
-set $TERM st
+set $TERM urxvt
 
 # Font will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:NotoSansMono-Regular 10
+font pango:NotoSansMono-Regular 8
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -40,12 +40,6 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 bindsym $mod+h focus left
-
-# alternatively, you can use the cursor keys:
-#bindsym $mod+Left focus left
-#bindsym $mod+Down focus down
-#bindsym $mod+Up focus up
-#bindsym $mod+Right focus right
 
 # move focused window
 bindsym $mod+Shift+j move down
@@ -158,14 +152,10 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Using Polybar
-#exec_always --no-startup-id ~/.config/polybar/launch.sh
-
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-       #status_command i3status
-        status_command i3blocks
+    status_command i3blocks -c $HOME/.config/i3blocks/config
 	position top
 	mode dock
 	modifier None
@@ -178,37 +168,19 @@ bar {
 }
 
 # Thickness of Boarder
-for_window [class="^.*"] border pixel 2
+for_window [class="^.*"] border pixel 1
+gaps inner 10
+gaps outer 10
 
 # Set Wallpaper
-#exec --no-startup-id feh --bg-fill $HOME/Wallpapers/Space/nebula-2560x1600-dark-space-blue-space-deep-hd-1777.jpg
-#exec --no-startup-id feh --bg-fill $HOME/Wallpapers/nature/trees.jpeg
-#exec --no-startup-id feh --bg-fill $HOME/Wallpapers/religion/crusader.jpeg
-exec --no-startup-id feh --bg-fill $HOME/Wallpapers/solarized/index.jpeg
-#exec --no-startup-id feh --bg-fill $HOME/Wallpapers/ancient/greek.jpeg
-#exec --no-startup-id feh --bg-fill $HOME/Wallpapers/Cyberpunk/map.jpeg
-
-# Set Trackball Sensitivity
-#exec --no-startup-id xinput -set-prop "Primax Kensington Eagle Trackball" "Coordinate Transformation Matrix" 0.5 0 0 0 0.5 0 0 0 1
+exec --no-startup-id feh --bg-fill $HOME/.config/wallpaper/space/blue_2.jpg
 
 # Run Autocutsel as a Daemon in background
 exec --no-startup-id autocutsel -s PRIMARY -fork
 
-# Run Unclutter to hide the cursor after 5 seconds.
-# Also turn off "focus follows mouse" since Unclutter bugs with that otherwise
-#exec --no-startup-id unclutter -idle 5
-#focus_follows_mouse no
-
-# Bind command for screenshot
-bindsym Print exec xfce4-screenshooter -i
-
-# Pulseaudio controls. The 1's where 0's before, that's why it didn't work.
-# Now I understand. When I now again inserted my Focusrite Scarlett soundcard that one got spot
-# 0, so now the headphones are 1. And thus I need to change to 1 again here for Pulseaudio to
-# control the volume for the headphones. Although, maybe I can control a mastervolume with amixer?
-# Apperently amixer commands are not recommended to use when using pulseaudio.
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +1% #increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -1% #decrease sound volume
+# Pulseaudio controls.
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 
 # Cmus controls.
@@ -217,10 +189,5 @@ bindsym XF86AudioPrev exec --no-startup-id cmus-remote --prev
 bindsym XF86AudioPause exec --no-startup-id cmus-remote --pause
 bindsym XF86AudioStop exec --no-startup-id cmus-remote --stop
 
-# Compton. This is necessry such that not mulpitle compton instances run an the same time which can
-# lead to Vim and terminal lagging
-# This does not seem to solve the problem
-#exec_always --no-startup-id pkill compton; compton -b --config $HOME/.compton.conf
-
-# Change language on startup
-exec --no-startup-id setxkbmap us
+# If another DP1 monitor is connected, split the desktop
+exec --no-startup-id xrandr | grep 'DP1 connected' && xrandr --output eDP1 --auto --output DP1 --auto --right-of eDP1
