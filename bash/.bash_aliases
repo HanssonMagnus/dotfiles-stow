@@ -12,6 +12,7 @@ alias shutdown='sudo shutdown now'
 alias reboot='sudo reboot'
 
 alias us='setxkbmap us'
+alias se='setxkbmap se'
 
 # Pipe fzf std to vim
 alias ed='fzf | xargs -r vim --not-a-term'
