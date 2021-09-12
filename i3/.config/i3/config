@@ -152,6 +152,9 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# Start nm-applet
+exec --no-startup-id nm-applet
+
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
@@ -172,9 +175,6 @@ for_window [class="^.*"] border pixel 1
 gaps inner 10
 gaps outer 10
 
-# Set Wallpaper
-exec --no-startup-id feh --bg-fill $HOME/.config/wallpaper/space/blue_2.jpg
-
 # Run Autocutsel as a Daemon in background
 exec --no-startup-id autocutsel -s PRIMARY -fork
 
@@ -191,3 +191,6 @@ bindsym XF86AudioStop exec --no-startup-id cmus-remote --stop
 
 # If another DP1 monitor is connected, split the desktop
 exec --no-startup-id xrandr | grep 'DP1 connected' && xrandr --output eDP1 --auto --output DP1 --auto --right-of eDP1
+
+# Set Wallpaper
+exec --no-startup-id feh --bg-fill $HOME/.config/wallpapers/space/blue_2.jpg

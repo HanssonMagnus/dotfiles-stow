@@ -121,8 +121,6 @@ export PATH="$HOME/opt/bin:$PATH"
 export PATH="$HOME/opt/stata:$PATH"
 export PATH="$HOME/opt/julia-1.2.0/bin:$HOME/.local/bin:$PATH"
 
-# Add source to autojump
-source /usr/share/autojump/autojump.sh
 # Install Ruby Gems to ~/gems
 export GEM_HOME="$HOME/gems"
 export PATH="$HOME/gems/bin:$PATH"
@@ -131,13 +129,13 @@ export PATH="$HOME/gems/bin:$PATH"
 set -o vi
 
 #################################################################################
-# j autojump, from Chrille
+# j autojump
 #################################################################################
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # source autojump
-. /usr/share/autojump/autojump.sh
+[[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
 
 j() {
     if [[ "$#" -ne 0 ]]; then

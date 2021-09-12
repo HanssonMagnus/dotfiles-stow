@@ -1,5 +1,4 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"
 " Maintainer: Magnus Hansson
 " Last change: 2020-03-20
 "
@@ -15,11 +14,8 @@
 "    -> Spell check
 "    -> Edit mappings
 "    -> Snippets
-"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 " Vim documentation at, :help
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set keys
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -41,8 +37,8 @@ endif
 " Plugins. Run :PlugInstall to install.
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/goyo.vim'
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
 Plug 'preservim/nerdtree'
 Plug 'shime/vim-livedown'
 Plug 'vim-syntastic/syntastic'
@@ -54,34 +50,6 @@ let g:goyo_width = 100
 
 " Deactive Syntastic for tex files
 let g:syntastic_mode_map = { 'passive_filetypes': ['tex'] }
-
-" Settings Syntastic with Airline
-let g:airline#extensions#syntastic#enable = 1
-let airline#extension#syntastic#error_synbol = 'E:'
-let airline#extension#syntastic#warning_symbol = 'W:'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Airline
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Set Airline plugin to use Powerline symbols
-let g:airline_powerline_fonts=1
-
-" Set Airline to display all buffers when there's only one tab open
-let g:airline#extensions#tabline#enabled = 1
-
-" Enable spell detection
-let g:airline_detect_spell=1
-
-" Airline displays the Nerdtree
-let g:airline#extensions#nerdtree_status=1
-
-"let g:airline#extensions#branch#enabled = 1
-"let g:airline#extensions#syntastic#enabled = 1
-"let g:airline#extensions#tagbar#enabled = 1
-
-" Airline theme
-"let g:airline_theme='solarized'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NerdTree, :help NERDTree
@@ -124,6 +92,9 @@ set clipboard=unnamedplus
 " Automatically delete trailing whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
 
+" Run xrdb (reloads .Xresources) whenever .Xresources is updated.
+autocmd BufWritePost ~/.Xresources !xrdb %
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Split, status line, tabs, buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -131,12 +102,36 @@ autocmd BufWritePre * %s/\s\+$//e
 " Splits open at the botton and right, which is non-retarded
 set splitbelow splitright
 
-" Always show the status line
+" Always show the status line and status bar
 set laststatus=2
+set showtabline=2
 
 " Switching to next and previous buffer
 nmap <leader>n :bn<CR>
 nmap <leader>p :bp<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" LightLine. For help: :h g:lightline
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set noshowmode "it is already showing in the bar
+
+let g:lightline = {
+      \ 'colorscheme': 'one',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'tabline': {
+      \   'left': [ ['buffers'] ],
+      \   'right': [ ['close'] ]
+      \ },
+      \ 'component_expand': {
+      \   'buffers': 'lightline#bufferline#buffers'
+      \ },
+      \ 'component_type': {
+      \   'buffers': 'tabsel'
+      \ }
+      \ }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Backup and files
@@ -152,9 +147,12 @@ nmap <leader>p :bp<CR>
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-" Turn on Wildmenu
+" Turn on Wildmenu, this is basically autocomplete in :
 set wildmenu
 set wildmode=longest,list,full
+
+" Gives a small menu, e.g., :b tab (change buffer)
+set wildchar=<Tab> wildmenu wildmode=full
 
 " Ignore case when searching
 set ignorecase
@@ -250,18 +248,3 @@ autocmd FileType tex inoremap ,li \item<Space>
 
 " Put \begin{} \end{} around the current word.
 autocmd FileType tex map <leader>b YpkI\begin{<ESC>A}<ESC>jI\end{<ESC>A}<esc>kA
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
