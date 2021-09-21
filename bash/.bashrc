@@ -117,13 +117,8 @@ export PS1="\[\e[31m\][\[\e[m\]\[\e[33m\]\u\[\e[m\]\[\e[32m\]@\[\e[m\]\[\e[34m\]
 ###################################################################################
 # Paths to scripts and programs. (Import to end with $PATH to not overwrite).
 ###################################################################################
-export PATH="$HOME/opt/bin:$PATH"
-export PATH="$HOME/opt/stata:$PATH"
-export PATH="$HOME/opt/julia-1.2.0/bin:$HOME/.local/bin:$PATH"
-
-# Install Ruby Gems to ~/gems
-export GEM_HOME="$HOME/gems"
-export PATH="$HOME/gems/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
+#export PATH="$HOME/.local/bin:$PATH"
 
 # Set Vi mode for Bash (emacs is default)
 set -o vi
