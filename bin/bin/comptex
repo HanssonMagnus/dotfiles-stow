@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# comptex <arg> <file>
+#
+# This is a script that helps compile .tex documents.
+#
+# Args:
+#   $1: -l or -s (long and short compilation)
+#   $2: file (without .tex ending)
+
+# This didn't work:
+#ARG = $1
+#FILE = $2
+
+if [ "$1" == "-l" ]; then
+    pdflatex $2
+    biber $2
+    pdflatex $2
+    pdflatex $2
+    echo ""
+    echo "Long compilation complete."
+fi
+
+if [ "$1" == "-s" ]; then
+    pdflatex $2
+    pdflatex $2
+    echo ""
+    echo "Short compilation complete."
+fi
