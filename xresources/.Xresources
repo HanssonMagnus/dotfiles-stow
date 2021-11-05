@@ -40,7 +40,8 @@ URxvt.depth:		32
 URxvt.font: 		xft:NotoSansMono-Regular:size=10
 !URxvt.font: 		xft:Roboto Mono for Powerline:size=10
 URxvt.scrollBar:	false
-URxvt.cursorColor:	white
+!URxvt.cursorColor:	white
+URxvt.cursorColor:	magenta
 !URxvt.letterSpace: -1
 
 Xft*dpi:                96
@@ -53,6 +54,10 @@ URxvt.shading:30
 
 ! Included this so you know how to make your foreground not match the color of your background
 URxvt.foreground: #eeeeee
+
+! scroll in relation to buffer (with mouse scroll or Shift+Page Up)
+URxvt.scrollWithBuffer: true
+URxvt.saveLines: 5000
 
 !! Common Keybinds for Navigations
 URxvt.keysym.Shift-Up: command:\033]720;1\007
