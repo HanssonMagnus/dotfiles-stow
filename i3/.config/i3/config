@@ -14,7 +14,7 @@
 set $mod Mod4
 
 # Set variables
-set $TERM urxvt
+set $TERM kitty
 
 # Font will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -178,6 +178,10 @@ gaps outer 10
 # Run Autocutsel as a Daemon in background
 exec --no-startup-id autocutsel -s PRIMARY -fork
 
+# Screen brightness Thinkpad
+bindsym XF86MonBrightnessDown exec --no-startup-id light -U 10
+bindsym XF86MonBrightnessUp exec --no-startup-id light -A 10
+
 # Pulseaudio controls.
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
@@ -189,8 +193,14 @@ bindsym XF86AudioPrev exec --no-startup-id cmus-remote --prev
 bindsym XF86AudioPause exec --no-startup-id cmus-remote --pause
 bindsym XF86AudioStop exec --no-startup-id cmus-remote --stop
 
-# If another DP1 monitor is connected, split the desktop
-exec --no-startup-id xrandr | grep 'DP1 connected' && xrandr --output eDP1 --auto --output DP1 --auto --right-of eDP1
+# If another DP-1 monitor is connected, split the desktop
+exec --no-startup-id xrandr | grep 'DP-1 connected' && xrandr --output eDP-1 --auto --output DP-1 --auto --right-of eDP-1
+
+# If another HDMI-1 monitor is connected, split the desktop
+exec --no-startup-id xrandr | grep 'HDMI-1 connected' && xrandr --output eDP-1 --auto --output HDMI-1 --auto --right-of eDP-1
 
 # Set Wallpaper
 exec --no-startup-id feh --bg-fill $HOME/.config/wallpapers/space/blue_2.jpg
+
+# Start compotitor
+exec --no-startup-id picom -b
