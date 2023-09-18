@@ -8,7 +8,7 @@ vim.api.nvim_set_keymap('n', '<leader>fb', ':Telescope buffers<cr>', { noremap =
 vim.api.nvim_set_keymap('n', '<leader>fh', ':Telescope help_tags<cr>', { noremap = true, silent = true })
 
 -- Toggle Nerd Tree
-vim.api.nvim_set_keymap('n', '<leader>t', ':NERDTreeToggle<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>t', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 
 -- Switch to next and previous buffer
 vim.api.nvim_set_keymap('n', '<leader>n', ':bn<CR>', { noremap = true, silent = true })
@@ -27,3 +27,13 @@ vim.api.nvim_set_keymap('n', '<leader>sp', '[s', { noremap = true, silent = true
 vim.api.nvim_set_keymap('n', '<leader>sa', 'zg', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>sr', 'zug', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>s?', 'z=', { noremap = true, silent = true })
+
+-- Unbind default bindings for arrow keys, trust me this is for your own good
+vim.keymap.set({ 'n', 'i', 'v' }, '<Up>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<Down>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<Left>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<Right>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-h>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-j>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-k>', '')
+vim.keymap.set({ 'n', 'i', 'v' }, '<C-l>', '')

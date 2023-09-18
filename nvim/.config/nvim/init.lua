@@ -1,32 +1,18 @@
 -- Maintainer: Magnus Hansson
--- Last change: 2022-08-15
-
---------------------------------------------------------------------------------
--- Load packer plugins, run :PackerSync to install
---------------------------------------------------------------------------------
--- Load lua/packes-plugins.lua
-require('user/packer-plugins')
-
--- Lualine
-require('lualine').setup({
-    options = {
-        theme = 'dracula',
-    }
-})
-require('lualine').setup()
-
--- Bufferline
-require("bufferline").setup{}
-
--- Treesitter
-require('user/treesitter')
+-- Last change: 2023-09-16
 
 --------------------------------------------------------------------------------
 -- Import settings
 --------------------------------------------------------------------------------
 require('user/options')
 require('user/keymaps')
-require('user/indent-blankline')
+
+--------------------------------------------------------------------------------
+-- Import plugins
+--------------------------------------------------------------------------------
+require('plugins/plugins')
+require('plugins/plugins_config/')
+--require("bufferline").setup{}
 
 --------------------------------------------------------------------------------
 -- Python PEP 8
@@ -55,4 +41,16 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
   pattern = { "~/.Xresources" },
   command = [[!xrdb %]]
+})
+
+-- Return to last edit position when opening files
+vim.api.nvim_create_autocmd('BufReadPost', {
+  callback = function(args)
+    local valid_line = vim.fn.line([['"]]) >= 1 and vim.fn.line([['"]]) < vim.fn.line('$')
+    local not_commit = vim.b[args.buf].filetype ~= 'commit'
+
+    if valid_line and not_commit then
+      vim.cmd([[normal! g`"]])
+    end
+  end,
 })
