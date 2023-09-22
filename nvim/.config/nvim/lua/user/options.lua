@@ -23,12 +23,12 @@ local options = {
     -- Line Settings
     relativenumber = true,              -- set relative numbered lines
     textwidth = 99,                     --
-    colorcolumn = 100,                  --
+--    colorcolumn = 100,                  --
     linebreak = true,                   --
     showbreak = "+++",                  --
 
     --- Color
-    syntax = true,                      --
+--    syntax = true,                      --
     t_Co = 256,                         --
     termguicolors = true                -- set term gui colors (most terminals support this)
 }
