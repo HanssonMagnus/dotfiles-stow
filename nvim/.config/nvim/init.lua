@@ -24,9 +24,14 @@ vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 
 --------------------------------------------------------------------------------
--- LaTeX
+-- LaTeX: Call tex_mappings when FileType is .tex
 --------------------------------------------------------------------------------
-
+vim.cmd [[
+  augroup MyTexGroup
+    autocmd!
+    autocmd FileType tex lua tex_mappings()
+  augroup END
+]]
 
 --------------------------------------------------------------------------------
 -- Misc.

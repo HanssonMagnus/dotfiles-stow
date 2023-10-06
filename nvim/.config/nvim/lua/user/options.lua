@@ -23,7 +23,7 @@ local options = {
     -- Line Settings
     relativenumber = true,              -- set relative numbered lines
     textwidth = 99,                     --
---    colorcolumn = 100,                  --
+    colorcolumn = "100",                  --
     linebreak = true,                   --
     showbreak = "+++",                  --
 

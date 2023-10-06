@@ -33,4 +33,3 @@ alias \
     ls="ls -hH --color=auto --group-directories-first" \
     grep="grep --color=auto" \
     diff="diff --color=auto"
-

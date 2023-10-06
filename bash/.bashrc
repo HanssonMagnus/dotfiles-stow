@@ -28,7 +28,7 @@ shopt -s checkwinsize
 #shopt -s globstar
 
 # make less more friendly for non-text input files, see lesspipe(1)
-#[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -79,13 +79,22 @@ if [ -x /usr/bin/dircolors ]; then
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
 
-    #alias grep='grep --color=auto'
-    #alias fgrep='fgrep --color=auto'
-    #alias egrep='egrep --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
 
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -107,7 +116,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-
 ###################################################################################
 # Set prompt
 ###################################################################################
@@ -124,7 +132,7 @@ set -o vi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # source autojump
-[[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
+[[ -s /usr/share/autojump/autojump.sh ]] && source /usr/share/autojump/autojump.sh
 
 j() {
     if [[ "$#" -ne 0 ]]; then
@@ -133,3 +141,8 @@ j() {
     fi
     cd "$(autojump -s | sort -k1gr | awk '$1 ~ /[0-9]:/ && $2 ~ /^\// { for (i=2; i<=NF; i++) { print $(i) } }' |  fzf --height 40% --reverse --inline-info)"
 }
+
+# Set editor
+export VISUAL=nvim;
+export EDITOR=nvim;
+. "$HOME/.cargo/env"

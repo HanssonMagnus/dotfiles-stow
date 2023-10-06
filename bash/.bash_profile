@@ -12,3 +12,4 @@ export PATH="$HOME/bin:$PATH"
 
 # Export editor
 export EDITOR="nvim"
+. "$HOME/.cargo/env"
