@@ -201,7 +201,8 @@ bindsym XF86AudioStop exec --no-startup-id cmus-remote --stop
 #exec_always --no-startup-id xrandr | grep 'HDMI-1 connected' && xrandr --output HDMI-1 --pos 0x0 --rotate right --output HDMI-0 --pos 1080x0
 #exec_always --no-startup-id xrandr | grep 'HDMI-1 connected' && xrandr --output HDMI-1 --auto --rotate right --left-of --output HDMI-0 --auto --primary
 #exec_always --no-startup-id xrandr --output HDMI-1 --pos 0x0 --rotate right --output --left-of HDMI-0 --pos 1080x0 --primary
-exec_always xrandr --output HDMI-1 --auto --output HDMI-0 --right-of HDMI-1 --auto
+#exec_always xrandr --output HDMI-1 --auto --output HDMI-0 --right-of HDMI-1 --auto
+exec_always xrandr --output DP-4 --auto --output DP-6 --left-of DP-4 --auto
 
 # Rotate left screen for the Server with 2 monitors
 #exec_always xrandr --output HDMI-1 --pos 0x0 --rotate right --output HDMI-0 --pos 1080x0

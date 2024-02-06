@@ -145,4 +145,6 @@ j() {
 # Set editor
 export VISUAL=nvim;
 export EDITOR=nvim;
-. "$HOME/.cargo/env"
+export PATH="/usr/local/go/bin:$PATH"
+export PATH="/media/m2_4tb/trueblocks/trueblocks-core/bin:$PATH"
+export PATH="/usr/local/bin/bundle:$PATH"

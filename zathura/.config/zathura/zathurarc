@@ -1,0 +1,8 @@
+# Zathura configuration file
+# See man `man zathurarc'
+
+# Open document in fit-width mode by default
+set adjust-open "best-fit"
+
+# Make Zathura be able to open links
+set sandbox none

@@ -32,4 +32,5 @@ alias ipe='curl ipinfo.io/ip'
 alias \
     ls="ls -hH --color=auto --group-directories-first" \
     grep="grep --color=auto" \
-    diff="diff --color=auto"
+    diff="diff --color=auto" \
+    euler="ssh magnus@10.0.0.2"
