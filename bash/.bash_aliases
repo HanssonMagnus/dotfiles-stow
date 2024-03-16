@@ -18,6 +18,9 @@ alias se='setxkbmap se'
 alias i3r='i3-msg restart'
 alias xr='xrdb ~/.Xresources'
 
+# Reset screen settings
+alias xrandrr='xrandr -s 0'
+
 # Pipe fzf std to vim
 alias ed='fzf | xargs -r vim --not-a-term'
 

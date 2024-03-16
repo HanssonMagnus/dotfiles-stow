@@ -119,8 +119,14 @@ fi
 ###################################################################################
 # Set prompt
 ###################################################################################
+# Parse git branch
+parse_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
 # With ~ pink
-export PS1="\[\e[31m\][\[\e[m\]\[\e[33m\]\u\[\e[m\]\[\e[32m\]@\[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[35m\]\w\[\e[m\]\[\e[31m\]]\[\e[m\] "
+#export PS1="\[\e[31m\][\[\e[m\]\[\e[33m\]\u\[\e[m\]\[\e[32m\]@\[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[35m\]\w\[\e[m\]\[\e[31m\]]\[\e[m\] "
+export PS1="\[\e[31m\][\[\e[m\]\[\e[33m\]\u\[\e[m\]\[\e[32m\]@\[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[35m\]\w\[\e[36m\]\$(parse_git_branch)\[\e[m\]\[\e[31m\]]\[\e[m\] "
 
 # Set Vi mode for Bash (emacs is default)
 set -o vi
@@ -146,3 +152,18 @@ j() {
 export VISUAL=nvim;
 export EDITOR=nvim;
 . "$HOME/.cargo/env"
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+case ":$PATH:" in
+    *:/home/magnus/.juliaup/bin:*)
+        ;;
+
+    *)
+        export PATH=/home/magnus/.juliaup/bin${PATH:+:${PATH}}
+        ;;
+esac
+
+# <<< juliaup initialize <<<
