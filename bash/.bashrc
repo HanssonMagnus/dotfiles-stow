@@ -1,150 +1,148 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+###################################################################################
+# ~/.bashrc — interactive shells only
+###################################################################################
+case $- in *i*) ;; *) return ;; esac
 
-# If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
 
-# don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
+###################################################################################
+# History
+###################################################################################
+shopt -s histappend cmdhist checkwinsize
+HISTCONTROL=ignoreboth:erasedups
+HISTSIZE=200000
+HISTFILESIZE=400000
+HISTTIMEFORMAT='%F %T '
 
-# append to the history file, don't overwrite it
-shopt -s histappend
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
-
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
-
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#shopt -s globstar
-
-# make less more friendly for non-text input files, see lesspipe(1)
+###################################################################################
+# lesspipe (makes less more capable and transparent)
+###################################################################################
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
+
+###################################################################################
+# Color setup for ls/grep/etc
+###################################################################################
+if command -v dircolors >/dev/null 2>&1; then
+  eval "$(dircolors -b ~/.dircolors 2>/dev/null || dircolors -b)"
 fi
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
 
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+###################################################################################
+# Import Aliases
+###################################################################################
+[ -f ~/.bash_aliases ] && . ~/.bash_aliases
 
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
-fi
 
-if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
-# colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
+###################################################################################
+# Programmable completion (smart tab completion)
+###################################################################################
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
+  if [ -r /usr/share/bash-completion/bash_completion ]; then
     . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
+  elif [ -r /etc/bash_completion ]; then
     . /etc/bash_completion
   fi
 fi
 
+
 ###################################################################################
-# Set prompt
+# Prompt
 ###################################################################################
-# With ~ pink
-export PS1="\[\e[31m\][\[\e[m\]\[\e[33m\]\u\[\e[m\]\[\e[32m\]@\[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[35m\]\w\[\e[m\]\[\e[31m\]]\[\e[m\] "
-
-# Set Vi mode for Bash (emacs is default)
-set -o vi
-
-#################################################################################
-# j autojump
-#################################################################################
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-# source autojump
-[[ -s /usr/share/autojump/autojump.sh ]] && source /usr/share/autojump/autojump.sh
-
-j() {
-    if [[ "$#" -ne 0 ]]; then
-    cd $(autojump $@)
-    return
-    fi
-    cd "$(autojump -s | sort -k1gr | awk '$1 ~ /[0-9]:/ && $2 ~ /^\// { for (i=2; i<=NF; i++) { print $(i) } }' |  fzf --height 40% --reverse --inline-info)"
+# Git branch, safe on detached HEAD, empty outside repos
+_git_branch() {
+  local b
+  b=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || return 0
+  [ "$b" != "HEAD" ] && printf ' (%s)' "$b"
 }
 
-# Set editor
-export VISUAL=nvim;
-export EDITOR=nvim;
-export PATH="/usr/local/go/bin:$PATH"
-export PATH="/media/m2_4tb/trueblocks/trueblocks-core/bin:$PATH"
-export PATH="/usr/local/bin/bundle:$PATH"
+# Title + your colored PS1 in one place
+PS1='\[\e]0;\u@\h: \w\a\]\[\e[35m\]\A \[\e[0m\]\[\e[31m\][\[\e[33m\]\u\[\e[0m\]\[\e[32m\]@\[\e[34m\]\h\[\e[0m\]\[\e[36m\]\w$(_git_branch)\[\e[31m\]]\[\e[0m\] '
+
+
+###################################################################################
+# Editing mode (vim)
+###################################################################################
+set -o vi
+
+
+###################################################################################
+# Elapsed time since last prompt
+###################################################################################
+__cmd_timer_start() { __CMD_START=$SECONDS; }
+__cmd_timer_print() {
+  local start=${__CMD_START:-$SECONDS}
+  local dur=$((SECONDS - start))
+  (( dur < 2 )) && return
+  local h=$((dur/3600)) m=$(((dur%3600)/60)) s=$((dur%60)) label=""
+  ((h>0)) && label+="${h}h"
+  ((m>0)) && label+="${m}m"
+  label+="${s}s"
+  printf '\e[90m→ %s\e[0m\n' "$label"
+}
+
+# Append to PROMPT_COMMAND without clobbering others
+if declare -p PROMPT_COMMAND 2>/dev/null | grep -q 'declare \-a PROMPT_COMMAND'; then
+  PROMPT_COMMAND+=(__cmd_timer_print __cmd_timer_start)
+else
+  if [ -n "${PROMPT_COMMAND:-}" ]; then
+    PROMPT_COMMAND=( "$PROMPT_COMMAND" __cmd_timer_print __cmd_timer_start )
+  else
+    PROMPT_COMMAND=( __cmd_timer_print __cmd_timer_start )
+  fi
+fi
+
+
+###################################################################################
+# fzf + autojump + j helper
+###################################################################################
+[ -f ~/.fzf.bash ] && . ~/.fzf.bash
+[ -s /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
+
+j() {
+  if [[ $# -gt 0 ]]; then
+    cd "$(autojump "$@")" || return
+    return
+  fi
+  local dest
+  dest=$(autojump -s | sort -k1gr | awk '$1 ~ /[0-9]:/ && $2 ~ /^\// { for (i=2; i<=NF; i++) { printf "%s%s", $i, (i<NF?" ":"\n") } }' \
+        | fzf --height 40% --reverse --inline-info)
+  [ -n "$dest" ] && cd "$dest"
+}
+
+
+###################################################################################
+# Editor and PATH
+###################################################################################
+export VISUAL=nvim
+export EDITOR=nvim
+
+_add_path() {
+  [ -z "$1" ] && return
+  # add if dir exists or file is executable, and not already present
+  { [ -d "$1" ] || [ -x "$1" ]; } && case ":$PATH:" in *":$1:"*) ;; *) PATH="$1:$PATH";; esac
+}
+
+_add_path /usr/local/go/bin
+_add_path /media/m2_4tb/trueblocks/trueblocks-core/bin
+_add_path /usr/local/bin/bundle
+
+# >>> juliaup initialize >>>
+# !! Contents within this block are managed by juliaup !!
+case ":$PATH:" in
+    *:/home/magnus/.juliaup/bin:*) ;;
+    *) PATH=/home/magnus/.juliaup/bin${PATH:+:${PATH}} ;;
+esac
+# <<< juliaup initialize <<<
+
+export PATH
+
+
+###################################################################################
+# Trudy secrets / env
+###################################################################################
+[ -f ~/API_KEYS/receptiviti.env ] && . ~/API_KEYS/receptiviti.env
+[ -f ~/API_KEYS/shopkeeper.env ]   && . ~/API_KEYS/shopkeeper.env
+[ -f ~/API_KEYS/llms.env ]         && . ~/API_KEYS/llms.env
+[ -f ~/API_KEYS/insight_iq.env ]   && . ~/API_KEYS/insight_iq.env
+
