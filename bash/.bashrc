@@ -50,11 +50,35 @@ fi
 # Prompt
 ###################################################################################
 # Git branch, safe on detached HEAD, empty outside repos
+#_git_branch() {
+#  local b
+#  b=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || return 0
+#  [ "$b" != "HEAD" ] && printf ' (%s)' "$b"
+#}
+
+# Git branch, safe on detached HEAD, empty outside repos
 _git_branch() {
+  # Not a git repo → no branch
+  if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+    return 0
+  fi
+
   local b
-  b=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || return 0
-  [ "$b" != "HEAD" ] && printf ' (%s)' "$b"
+  # This is a bit more robust than rev-parse --abbrev-ref HEAD alone
+  b=$(git branch --show-current 2>/dev/null)
+
+  # If we're in detached HEAD, .git/HEAD won't be a branch name
+  if [[ -z "$b" ]]; then
+    # Try to get a short commit hash instead of failing
+    b=$(git rev-parse --short HEAD 2>/dev/null || echo "")
+  fi
+
+  # Still nothing? Just bail quietly
+  [[ -z "$b" ]] && return 0
+
+  printf ' (%s)' "$b"
 }
+
 
 # Title + your colored PS1 in one place
 PS1='\[\e]0;\u@\h: \w\a\]\[\e[35m\]\A \[\e[0m\]\[\e[31m\][\[\e[33m\]\u\[\e[0m\]\[\e[32m\]@\[\e[34m\]\h\[\e[0m\]\[\e[36m\]\w$(_git_branch)\[\e[31m\]]\[\e[0m\] '
@@ -69,6 +93,7 @@ set -o vi
 ###################################################################################
 # Elapsed time since last prompt
 ###################################################################################
+# Elapsed time since last prompt
 __cmd_timer_start() { __CMD_START=$SECONDS; }
 __cmd_timer_print() {
   local start=${__CMD_START:-$SECONDS}
@@ -81,15 +106,18 @@ __cmd_timer_print() {
   printf '\e[90m→ %s\e[0m\n' "$label"
 }
 
-# Append to PROMPT_COMMAND without clobbering others
-if declare -p PROMPT_COMMAND 2>/dev/null | grep -q 'declare \-a PROMPT_COMMAND'; then
-  PROMPT_COMMAND+=(__cmd_timer_print __cmd_timer_start)
+# Bash runs all commands in the variable PROMPT_COMMAND before drawing a prompt, and the
+# commands can either be in an array (Bash 4.4+) or in a string separated by ;
+# (traditional way). The old-school Bash way is still standard and that is what autojump
+# uses in /usr/share/autojump/autojump.bash so I'll do the same, otherwise
+# $PROMPT_COMMAND won't work.
+#
+# String-based PROMPT_COMMAND (compatible with autojump), adds new variable with ;
+# Inspect it in the CLI with: declare -p PROMPT_COMMAND
+if [[ -n "${PROMPT_COMMAND:-}" ]]; then
+  PROMPT_COMMAND="__cmd_timer_print; __cmd_timer_start; $PROMPT_COMMAND"
 else
-  if [ -n "${PROMPT_COMMAND:-}" ]; then
-    PROMPT_COMMAND=( "$PROMPT_COMMAND" __cmd_timer_print __cmd_timer_start )
-  else
-    PROMPT_COMMAND=( __cmd_timer_print __cmd_timer_start )
-  fi
+  PROMPT_COMMAND="__cmd_timer_print; __cmd_timer_start"
 fi
 
 
