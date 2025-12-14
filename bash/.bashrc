@@ -46,43 +46,6 @@ if ! shopt -oq posix; then
 fi
 
 
-###################################################################################
-# Prompt
-###################################################################################
-# Git branch, safe on detached HEAD, empty outside repos
-#_git_branch() {
-#  local b
-#  b=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || return 0
-#  [ "$b" != "HEAD" ] && printf ' (%s)' "$b"
-#}
-
-# Git branch, safe on detached HEAD, empty outside repos
-_git_branch() {
-  # Not a git repo → no branch
-  if ! git rev-parse --is-inside-work-tree &>/dev/null; then
-    return 0
-  fi
-
-  local b
-  # This is a bit more robust than rev-parse --abbrev-ref HEAD alone
-  b=$(git branch --show-current 2>/dev/null)
-
-  # If we're in detached HEAD, .git/HEAD won't be a branch name
-  if [[ -z "$b" ]]; then
-    # Try to get a short commit hash instead of failing
-    b=$(git rev-parse --short HEAD 2>/dev/null || echo "")
-  fi
-
-  # Still nothing? Just bail quietly
-  [[ -z "$b" ]] && return 0
-
-  printf ' (%s)' "$b"
-}
-
-
-# Title + your colored PS1 in one place
-PS1='\[\e]0;\u@\h: \w\a\]\[\e[35m\]\A \[\e[0m\]\[\e[31m\][\[\e[33m\]\u\[\e[0m\]\[\e[32m\]@\[\e[34m\]\h\[\e[0m\]\[\e[36m\]\w$(_git_branch)\[\e[31m\]]\[\e[0m\] '
-
 
 ###################################################################################
 # Editing mode (vim)
@@ -92,7 +55,11 @@ set -o vi
 
 ###################################################################################
 # Elapsed time since last prompt
+# We later add __cmd_timer_start and __cmd_timer_print to PROMPT_COMMAND
 ###################################################################################
+# Initialize timer baseline for prompt timing
+__CMD_START=$SECONDS
+
 # Elapsed time since last prompt
 __cmd_timer_start() { __CMD_START=$SECONDS; }
 __cmd_timer_print() {
@@ -105,20 +72,6 @@ __cmd_timer_print() {
   label+="${s}s"
   printf '\e[90m→ %s\e[0m\n' "$label"
 }
-
-# Bash runs all commands in the variable PROMPT_COMMAND before drawing a prompt, and the
-# commands can either be in an array (Bash 4.4+) or in a string separated by ;
-# (traditional way). The old-school Bash way is still standard and that is what autojump
-# uses in /usr/share/autojump/autojump.bash so I'll do the same, otherwise
-# $PROMPT_COMMAND won't work.
-#
-# String-based PROMPT_COMMAND (compatible with autojump), adds new variable with ;
-# Inspect it in the CLI with: declare -p PROMPT_COMMAND
-if [[ -n "${PROMPT_COMMAND:-}" ]]; then
-  PROMPT_COMMAND="__cmd_timer_print; __cmd_timer_start; $PROMPT_COMMAND"
-else
-  PROMPT_COMMAND="__cmd_timer_print; __cmd_timer_start"
-fi
 
 
 ###################################################################################
@@ -135,7 +88,7 @@ j() {
   local dest
   dest=$(autojump -s | sort -k1gr | awk '$1 ~ /[0-9]:/ && $2 ~ /^\// { for (i=2; i<=NF; i++) { printf "%s%s", $i, (i<NF?" ":"\n") } }' \
         | fzf --height 40% --reverse --inline-info)
-  [ -n "$dest" ] && cd "$dest"
+  [[ -n "$dest" ]] && cd "$dest"
 }
 
 
@@ -164,6 +117,56 @@ esac
 # <<< juliaup initialize <<<
 
 export PATH
+
+
+###################################################################################
+# Git branch funciton, the variable is later used in PS1
+###################################################################################
+# Define __GIT_PROMPT to avoid any weird edge cases
+__GIT_PROMPT=""
+
+# Compute git branch once per prompt and store in $__GIT_PROMPT
+__update_git_prompt() {
+  __GIT_PROMPT=""
+
+  command git rev-parse --is-inside-work-tree &>/dev/null || return 0
+
+  local b
+  b=$(command git branch --show-current 2>/dev/null)
+
+  if [[ -z "$b" ]]; then
+    b=$(command git rev-parse --short HEAD 2>/dev/null || true)
+  fi
+
+  [[ -n "$b" ]] && __GIT_PROMPT=" ($b)"
+}
+
+###################################################################################
+# Update PROMPT_COMMAND
+###################################################################################
+# Bash runs all commands in the variable PROMPT_COMMAND before drawing a prompt, and the
+# commands can either be in an array (Bash 4.4+) or in a string separated by ;
+# (traditional way). The old-school Bash way is still standard and that is what autojump
+# uses in /usr/share/autojump/autojump.bash so I'll do the same, otherwise
+# $PROMPT_COMMAND won't work.
+#
+# String-based PROMPT_COMMAND (compatible with autojump), adds new variable with ;
+# Inspect it in the CLI with: declare -p PROMPT_COMMAND
+__prompt_hook() {
+  __cmd_timer_print # Variable Used in "Elapsed time since last prompt" above
+  __cmd_timer_start # Variable Used in "Elapsed time since last prompt" above
+  __update_git_prompt # Code above to display git branch in PS1
+}
+
+# Update PROMPT_COMMAND
+PROMPT_COMMAND="__prompt_hook${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+
+
+###################################################################################
+# Prompt
+###################################################################################
+# Title + your colored PS1 in one place
+PS1='\[\e]0;\u@\h: \w\a\]\[\e[35m\]\A \[\e[0m\]\[\e[31m\][\[\e[33m\]\u\[\e[0m\]\[\e[32m\]@\[\e[34m\]\h\[\e[0m\]\[\e[36m\]\w${__GIT_PROMPT}\[\e[31m\]]\[\e[0m\] '
 
 
 ###################################################################################
