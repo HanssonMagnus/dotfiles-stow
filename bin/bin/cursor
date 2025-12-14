@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Run Cursor Image detatched
+setsid "$HOME/Downloads/cursor/Cursor-0.48.7-x86_64.AppImage" >/dev/null 2>&1 &
