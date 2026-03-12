@@ -194,6 +194,9 @@ bindsym XF86AudioPrev exec --no-startup-id cmus-remote --prev
 bindsym XF86AudioPause exec --no-startup-id cmus-remote --pause
 bindsym XF86AudioStop exec --no-startup-id cmus-remote --stop
 
+# Set monitor resolution (which DP-X connection depends on which physical post the monitor is connected to on the computer)
+exec --no-startup-id xrandr --output DP-0 --mode 3840x2160 --rate 60 --scale 0.75x0.75
+
 # If another DP-1 monitor is connected, split the desktop
 #exec --no-startup-id xrandr | grep 'DP-1 connected' && xrandr --output eDP-1 --auto --output DP-1 --auto --right-of eDP-1
 
@@ -202,7 +205,7 @@ bindsym XF86AudioStop exec --no-startup-id cmus-remote --stop
 #exec_always --no-startup-id xrandr | grep 'HDMI-1 connected' && xrandr --output HDMI-1 --auto --rotate right --left-of --output HDMI-0 --auto --primary
 #exec_always --no-startup-id xrandr --output HDMI-1 --pos 0x0 --rotate right --output --left-of HDMI-0 --pos 1080x0 --primary
 #exec_always xrandr --output HDMI-1 --auto --output HDMI-0 --right-of HDMI-1 --auto
-exec_always xrandr --output DP-4 --auto --output DP-6 --left-of DP-4 --auto
+#exec_always xrandr --output DP-4 --auto --output DP-6 --left-of DP-4 --auto
 
 # Rotate left screen for the Server with 2 monitors
 #exec_always xrandr --output HDMI-1 --pos 0x0 --rotate right --output HDMI-0 --pos 1080x0

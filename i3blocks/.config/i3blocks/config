@@ -88,11 +88,11 @@ min_width=CPU 100.00%
 ## Battery indicator
 ##
 ## The battery instance defaults to 0.
-[battery]
-command=~/.config/i3blocks/battery/battery
+#[battery]
+#command=~/.config/i3blocks/battery/battery
 #label=BAT
-label=⚡
-interval=30
+#label=⚡
+#interval=30
 #
 ## Arch updates
 ##[arch-update]

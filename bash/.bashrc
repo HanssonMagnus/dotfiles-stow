@@ -105,7 +105,7 @@ _add_path() {
 }
 
 _add_path /usr/local/go/bin
-_add_path /media/m2_4tb/trueblocks/trueblocks-core/bin
+_add_path /media/m2_4tb/trueblocks-core/bin
 _add_path /usr/local/bin/bundle
 
 # >>> juliaup initialize >>>
