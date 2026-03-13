@@ -16,6 +16,11 @@ use strict;
 use warnings;
 use utf8;
 
+# Check if any battery exists in the system
+# If no battery found (e.g., desktop), exit silently without showing the block
+my @batteries = glob("/sys/class/power_supply/BAT*");
+exit(0) if scalar(@batteries) == 0;
+
 my $acpi;
 my $status;
 my $percent;
