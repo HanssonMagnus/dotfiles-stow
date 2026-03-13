@@ -37,7 +37,7 @@ interval=30
 
 # Volume
 [volume]
-command=~/.config/i3blocks/volume/volume
+command=~/.config/i3blocks/my_blocks/volume/volume
 label=VOL:
 interval=once
 signal=10
@@ -51,7 +51,7 @@ signal=10
 #
 ## Memory usage
 [memory]
-command=~/.config/i3blocks/memory/memory
+command=~/.config/i3blocks/my_blocks/memory/memory
 label=MEM:
 separator=false
 interval=30
@@ -63,14 +63,14 @@ interval=30
 ## (defaults to 10 for 10%).
 [disk]
 #command=$SCRIPT_DIR/disk
-command=~/.config/i3blocks/disk/disk
+command=~/.config/i3blocks/my_blocks/disk/disk
 label=HOME:
 #DIR=/mnt/data
 interval=30
 #
 ## Temperature
 [temperature]
-command=~/.config/i3blocks/temperature/temperature
+command=~/.config/i3blocks/my_blocks/temperature/temperature
 label=TEMP:
 interval=10
 #
@@ -79,7 +79,7 @@ interval=10
 ## The script may be called with -w and -c switches to specify thresholds,
 ## see the script for details.
 [cpu_usage]
-command=~/.config/i3blocks/cpu_usage/cpu_usage
+command=~/.config/i3blocks/my_blocks/cpu_usage/cpu_usage
 label=CPU
 interval=10
 min_width=CPU 100.00%
@@ -89,7 +89,7 @@ min_width=CPU 100.00%
 ##
 ## The battery instance defaults to 0.
 [battery]
-command=~/.config/i3blocks/battery/battery
+command=~/.config/i3blocks/my_blocks/battery/battery
 label=BAT
 label=⚡
 interval=30
