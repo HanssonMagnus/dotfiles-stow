@@ -28,7 +28,14 @@ local plugins = {
     'nvim-treesitter/nvim-treesitter',
         build = ":TSUpdate"
   },
-  'akinsho/bufferline.nvim',
+  {
+    'akinsho/bufferline.nvim',
+    branch = 'main',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('bufferline').setup({})
+    end,
+  },
   {
 	  'nvim-telescope/telescope.nvim',
 	  tag = '0.1.3',
