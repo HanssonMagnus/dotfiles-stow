@@ -29,7 +29,6 @@ local options = {
 
     --- Color
 --    syntax = true,                      --
-    t_Co = 256,                         --
     termguicolors = true                -- set term gui colors (most terminals support this)
 }
 
