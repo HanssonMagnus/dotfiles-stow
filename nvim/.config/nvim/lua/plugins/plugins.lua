@@ -26,7 +26,10 @@ local plugins = {
   'nvim-lualine/lualine.nvim',
   {
     'nvim-treesitter/nvim-treesitter',
-        build = ":TSUpdate"
+    build = ':TSUpdate',
+    config = function()
+      require('plugins/plugins_config/treesitter')
+    end,
   },
   {
     'akinsho/bufferline.nvim',
@@ -40,12 +43,6 @@ local plugins = {
 	  'nvim-telescope/telescope.nvim',
 	  tag = '0.1.3',
 	  dependencies = { {'nvim-lua/plenary.nvim'} }
-  },
-  {
-      "iamcco/markdown-preview.nvim",
-      cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-      ft = { "markdown" },
-      build = function() vim.fn["mkdp#util#install"]() end,
   }
 }
 
