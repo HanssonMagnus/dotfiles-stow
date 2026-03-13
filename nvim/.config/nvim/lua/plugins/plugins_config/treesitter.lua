@@ -1,10 +1,13 @@
-require'nvim-treesitter.configs'.setup {
-  -- A list of parser names, or "all"
-  ensure_installed = { "python", "bash", "markdown", "c", "lua", "rust", "ruby", "vim" },
+-- Install parsers (using the new nvim-treesitter API)
+require'nvim-treesitter'.install({ "python", "bash", "markdown", "c", "lua", "rust", "ruby", "vim" })
 
-  -- Install parsers synchronously (only applied to `ensure_installed`)
-  sync_install = false,
-  auto_install = true,
-  highlight = {enable = true},
-  indent = {enable = true},
-}
+-- Enable treesitter highlighting for all filetypes
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = '*',
+  callback = function()
+    local ok = pcall(vim.treesitter.start)
+    if not ok then
+      -- Silently fail if parser not available for this filetype
+    end
+  end,
+})
