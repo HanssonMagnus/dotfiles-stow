@@ -42,6 +42,9 @@ Shell and helper packages used by aliases or scripts:
 - `mawk`
 - `openssl`
 - `dict`
+- `acpi`
+- `sysstat`
+- `lm_sensors`
 
 ### Ubuntu
 
@@ -74,7 +77,7 @@ Package names can vary slightly between Fedora releases. If one of the X11 utili
 
 ### Notes
 
-- The `i3blocks` config references several helper scripts such as `volume`, `memory`, `disk`, `temperature`, `cpu_usage`, and `battery`. This repository only contains the custom keyboard-layout block, so those other block scripts need to exist separately on the machine.
+- The `i3blocks` config references several helper scripts such as `volume`, `memory`, `disk`, `temperature`, `cpu_usage`, and `battery`, these may have dependencies such as `lm_sensors` that need to be installed.
 - The battery block is useful on laptops and harmless to disable on desktops.
 
 ## Examples
