@@ -78,7 +78,11 @@ __cmd_timer_print() {
 # fzf + autojump + j helper
 ###################################################################################
 [ -f ~/.fzf.bash ] && . ~/.fzf.bash
-[ -s /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh
+if [ -s /usr/share/autojump/autojump.sh ]; then
+  . /usr/share/autojump/autojump.sh
+elif [ -s /usr/share/autojump/autojump.bash ]; then
+  . /usr/share/autojump/autojump.bash
+fi
 
 j() {
   if [[ $# -gt 0 ]]; then
