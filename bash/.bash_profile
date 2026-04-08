@@ -18,6 +18,7 @@ export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/usr/local/go/bin:$PATH"
 export PATH="/media/m2_4tb/trueblocks/trueblocks-core/bin:$PATH"
+export PATH="$PATH:/var/lib/flatpak/exports/bin"
 
 
 ###################################################################################
@@ -38,3 +39,9 @@ case ":$PATH:" in
 esac
 # <<< juliaup initialize <<<
 
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/magnus/Downloads/google-cloud-sdk/path.bash.inc' ]; then . '/home/magnus/Downloads/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/magnus/Downloads/google-cloud-sdk/completion.bash.inc' ]; then . '/home/magnus/Downloads/google-cloud-sdk/completion.bash.inc'; fi
