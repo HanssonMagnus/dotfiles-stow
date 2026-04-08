@@ -15,6 +15,7 @@
 # Paths to scripts and programs
 ###################################################################################
 export PATH="$HOME/bin:$PATH"
+export PATH="/home/magnus/Trudy/git/trudy-cli:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/usr/local/go/bin:$PATH"
 export PATH="/media/m2_4tb/trueblocks/trueblocks-core/bin:$PATH"
