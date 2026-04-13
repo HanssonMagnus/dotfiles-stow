@@ -108,9 +108,13 @@ _add_path() {
   { [ -d "$1" ] || [ -x "$1" ]; } && case ":$PATH:" in *":$1:"*) ;; *) PATH="$1:$PATH";; esac
 }
 
+_add_path "$HOME/bin"
+_add_path "$HOME/.local/bin"
 _add_path /usr/local/go/bin
 _add_path /media/m2_4tb/trueblocks-core/bin
 _add_path /usr/local/bin/bundle
+_add_path /home/magnus/Trudy/git/trudy-cli
+_add_path /var/lib/flatpak/exports/bin
 
 # >>> juliaup initialize >>>
 # !! Contents within this block are managed by juliaup !!
@@ -119,6 +123,8 @@ case ":$PATH:" in
     *) PATH=/home/magnus/.juliaup/bin${PATH:+:${PATH}} ;;
 esac
 # <<< juliaup initialize <<<
+
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 export PATH
 
@@ -171,6 +177,13 @@ PROMPT_COMMAND="__prompt_hook${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
 ###################################################################################
 # Title + your colored PS1 in one place
 PS1='\[\e]0;\u@\h: \w\a\]\[\e[35m\]\A \[\e[0m\]\[\e[31m\][\[\e[33m\]\u\[\e[0m\]\[\e[32m\]@\[\e[34m\]\h\[\e[0m\]\[\e[36m\]\w${__GIT_PROMPT}\[\e[31m\]]\[\e[0m\] '
+
+
+###################################################################################
+# Google Cloud SDK
+###################################################################################
+if [ -f '/home/magnus/Downloads/google-cloud-sdk/path.bash.inc' ]; then . '/home/magnus/Downloads/google-cloud-sdk/path.bash.inc'; fi
+if [ -f '/home/magnus/Downloads/google-cloud-sdk/completion.bash.inc' ]; then . '/home/magnus/Downloads/google-cloud-sdk/completion.bash.inc'; fi
 
 
 ###################################################################################
