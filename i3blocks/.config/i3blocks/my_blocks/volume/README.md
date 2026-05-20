@@ -38,10 +38,13 @@ signal=10
 #SCONTROL=[determined automatically]
 #NATURAL_MAPPING=0
 ```
-For PulseAudio users, MIXER is usually "pulse" or "default".
-For Jack/Jack2 users, MIXER is usually "jackplug".
-For ALSA users, use "default" for your primary card, or "hw:#" 
-where # is the number of the card desired.
+MIXER is determined automatically: "pulse" is used when PulseAudio or a
+PulseAudio-compatible server (e.g. PipeWire with pipewire-pulse) is available,
+"jackplug" when JACK is loaded, and "default" otherwise.
+
+To override: for PulseAudio/PipeWire users set MIXER="pulse", for Jack/Jack2
+users set MIXER="jackplug", for ALSA users use "default" or "hw:#" where # is
+the card number.
 
 For a list of available SCONTROL options, use `amixer -D $MIXER scontrols`.
 
