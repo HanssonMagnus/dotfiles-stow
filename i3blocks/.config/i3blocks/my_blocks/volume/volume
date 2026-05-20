@@ -29,6 +29,9 @@ if [[ -z "$MIXER" ]] ; then
         if amixer -D pulse info >/dev/null 2>&1 ; then
             MIXER="pulse"
         fi
+    elif amixer -D pulse info >/dev/null 2>&1 ; then
+        # pipewire-pulse or other PulseAudio-compatible server without the pulseaudio daemon
+        MIXER="pulse"
     fi
     [ -n "$(lsmod | grep jack)" ] && MIXER="jackplug"
     MIXER="${2:-$MIXER}"
