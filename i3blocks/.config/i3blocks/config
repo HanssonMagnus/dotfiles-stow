@@ -101,6 +101,12 @@ interval=30
 ##markup=pango
 ##LABEL=Updates:
 #
+## Nosleep — toggle system sleep/idle prevention
+[nosleep]
+command=~/.config/i3blocks/my_blocks/nosleep/nosleep
+interval=once
+signal=11
+
 ## Date Time
 ##
 [time]

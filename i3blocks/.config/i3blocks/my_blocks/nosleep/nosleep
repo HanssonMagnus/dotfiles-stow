@@ -1,0 +1,64 @@
+#!/bin/bash
+
+PIDFILE=/tmp/nosleep.pid
+COLOR_ON="#B8BB26"    # gruvbox green — active
+COLOR_OFF="#665C54"   # gruvbox dark gray — inactive
+ICON="☕"
+SIGNAL=11
+
+is_running() {
+    [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null
+}
+
+start() {
+    # Disable X11 screensaver and DPMS (prevents screen blanking)
+    xset -dpms
+    xset s off
+
+    # Start systemd-inhibit wrapping a mouse-nudge loop in the background.
+    # systemd-inhibit blocks the system from suspending (idle + sleep).
+    # The loop wakes every 2 minutes and moves the mouse 1px right then 1px
+    # left — this resets the X11 input idle counter that apps like Slack use
+    # to decide whether to mark you as away.
+    DISPLAY="$DISPLAY" systemd-inhibit \
+        --what=idle:sleep --why="nosleep" --who="nosleep" \
+        bash -c 'while true; do sleep 120
+            xdotool mousemove_relative --sync 1 0
+            xdotool mousemove_relative --sync -- -1 0
+        done' </dev/null >/dev/null 2>/dev/null &
+
+    # Store the PID so we can kill it later
+    echo $! > "$PIDFILE"
+}
+
+stop() {
+    if [ -f "$PIDFILE" ]; then
+        PID=$(cat "$PIDFILE")
+        # Kill the systemd-inhibit process and any children (the bash loop)
+        kill "$PID" 2>/dev/null
+        pkill -P "$PID" 2>/dev/null
+        rm -f "$PIDFILE"
+    fi
+
+    # Re-enable screensaver and DPMS
+    xset +dpms
+    xset s on
+}
+
+# Handle mouse click — left click toggles state, then signals i3blocks to
+# immediately re-run this script and refresh the bar display
+case $BLOCK_BUTTON in
+    1) if is_running; then stop; else start; fi
+       pkill -SIGRTMIN+"$SIGNAL" i3blocks ;;
+esac
+
+# Output current state in i3blocks 3-line format: full_text / short_text / color
+if is_running; then
+    echo "$ICON on"
+    echo "$ICON"
+    echo "$COLOR_ON"
+else
+    echo "$ICON off"
+    echo "$ICON"
+    echo "$COLOR_OFF"
+fi
