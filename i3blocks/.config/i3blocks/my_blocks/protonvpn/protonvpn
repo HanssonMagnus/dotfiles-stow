@@ -1,0 +1,59 @@
+#!/bin/bash
+
+IFACE=/sys/class/net/proton0
+STATE_FILE=/tmp/i3blocks_protonvpn_state
+CACHE_FILE=/tmp/i3blocks_protonvpn_cache
+CACHE_MAX_AGE=300  # 5 minutes — self-heals if the server changes without an interface flap
+COLOR_ON="#B8BB26"    # gruvbox green — connected
+COLOR_OFF="#665C54"   # gruvbox dark gray — disconnected
+ICON="🌐"
+SIGNAL=12
+
+is_connected() {
+    [ -d "$IFACE" ]
+}
+
+cache_is_stale() {
+    [ ! -f "$CACHE_FILE" ] && return 0
+    local age=$(( $(date +%s) - $(stat -c %Y "$CACHE_FILE") ))
+    [ "$age" -ge "$CACHE_MAX_AGE" ]
+}
+
+refresh_cache() {
+    protonvpn status > "$CACHE_FILE" 2>/dev/null
+}
+
+server_line() {
+    grep '^Server:' "$CACHE_FILE" 2>/dev/null
+}
+
+# Handle mouse click — left click toggles the connection, then forces a fresh
+# status fetch and signals i3blocks to immediately re-run this script.
+case $BLOCK_BUTTON in
+    1) if is_connected; then
+           protonvpn disconnect >/dev/null 2>&1
+       else
+           protonvpn connect >/dev/null 2>&1
+       fi
+       rm -f "$CACHE_FILE"
+       pkill -SIGRTMIN+"$SIGNAL" i3blocks ;;
+esac
+
+PREV_STATE=$(cat "$STATE_FILE" 2>/dev/null)
+
+if is_connected; then
+    if [ "$PREV_STATE" != "connected" ] || cache_is_stale; then
+        refresh_cache
+    fi
+    echo "connected" > "$STATE_FILE"
+
+    echo "$ICON $(server_line | sed 's/^Server: //')"
+    echo "$ICON"
+    echo "$COLOR_ON"
+else
+    echo "disconnected" > "$STATE_FILE"
+
+    echo "$ICON not connected"
+    echo "$ICON"
+    echo "$COLOR_OFF"
+fi

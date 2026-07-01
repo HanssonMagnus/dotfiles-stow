@@ -107,6 +107,12 @@ command=~/.config/i3blocks/my_blocks/nosleep/nosleep
 interval=once
 signal=11
 
+## ProtonVPN — toggle VPN connection, shows connected server
+[protonvpn]
+command=~/.config/i3blocks/my_blocks/protonvpn/protonvpn
+interval=3
+signal=12
+
 ## Date Time
 ##
 [time]
