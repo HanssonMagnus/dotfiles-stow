@@ -113,6 +113,12 @@ command=~/.config/i3blocks/my_blocks/protonvpn/protonvpn
 interval=3
 signal=12
 
+## Redshift — toggle night-vision color temperature, scroll to adjust warmth
+[redshift]
+command=~/.config/i3blocks/my_blocks/redshift/redshift
+interval=once
+signal=13
+
 ## Date Time
 ##
 [time]

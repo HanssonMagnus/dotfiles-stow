@@ -1,0 +1,71 @@
+#!/bin/bash
+
+STATE_FILE=/tmp/i3blocks_redshift_state
+TEMP_FILE=/tmp/i3blocks_redshift_temp
+DEFAULT_TEMP=3500
+STEP=250
+MIN_TEMP=1000
+MAX_TEMP=6500
+COLOR_ON="#B8BB26"    # gruvbox green — active
+COLOR_OFF="#665C54"   # gruvbox dark gray — inactive
+ICON="🖥"
+SIGNAL=13
+
+is_on() {
+    [ "$(cat "$STATE_FILE" 2>/dev/null)" = "on" ]
+}
+
+current_temp() {
+    cat "$TEMP_FILE" 2>/dev/null || echo "$DEFAULT_TEMP"
+}
+
+clamp() {
+    local temp=$1
+    [ "$temp" -lt "$MIN_TEMP" ] && temp=$MIN_TEMP
+    [ "$temp" -gt "$MAX_TEMP" ] && temp=$MAX_TEMP
+    echo "$temp"
+}
+
+turn_on() {
+    redshift -P -O "$DEFAULT_TEMP" >/dev/null 2>&1
+    echo "$DEFAULT_TEMP" > "$TEMP_FILE"
+    echo "on" > "$STATE_FILE"
+}
+
+turn_off() {
+    redshift -x >/dev/null 2>&1
+    echo "off" > "$STATE_FILE"
+}
+
+adjust_temp() {
+    local delta=$1
+    local temp
+    temp=$(clamp $(( $(current_temp) + delta )))
+    # -P resets existing gamma ramps before applying — without it, some
+    # drivers only honor the first -O call and ignore subsequent ones.
+    redshift -P -O "$temp" >/dev/null 2>&1
+    echo "$temp" > "$TEMP_FILE"
+}
+
+# Handle mouse click / scroll — left click toggles on/off; scrolling only
+# adjusts warmth while already on (scroll up warms further, scroll down
+# moves back toward neutral). Either way, signal i3blocks to redraw now.
+case $BLOCK_BUTTON in
+    1) if is_on; then turn_off; else turn_on; fi
+       pkill -SIGRTMIN+"$SIGNAL" i3blocks ;;
+    4) if is_on; then adjust_temp -"$STEP"; pkill -SIGRTMIN+"$SIGNAL" i3blocks; fi ;;
+    5) if is_on; then adjust_temp "$STEP"; pkill -SIGRTMIN+"$SIGNAL" i3blocks; fi ;;
+esac
+
+# Output current state in i3blocks 3-line format: full_text / short_text / color
+# Off always shows MAX_TEMP (6500K = neutral/no adjustment, same value redshift
+# -x resets to) so the block's width doesn't jump when toggling on/off.
+if is_on; then
+    echo "$ICON on $(current_temp)K"
+    echo "$ICON"
+    echo "$COLOR_ON"
+else
+    echo "$ICON off ${MAX_TEMP}K"
+    echo "$ICON"
+    echo "$COLOR_OFF"
+fi
