@@ -1,0 +1,25 @@
+#!/bin/bash
+# Do-not-disturb toggle for dunst. Left-click pauses/resumes ALL notifications.
+# State is read live from `dunstctl is-paused` (no state file needed).
+# cf. sibling toggles: protonvpn, redshift, nosleep.
+
+COLOR_MUTED="#FB4934"    # gruvbox red  — notifications are OFF (attention)
+COLOR_ACTIVE="#665C54"   # gruvbox gray — notifications flowing (normal/quiet)
+ICON_MUTED="🔕"
+ICON_ACTIVE="🔔"
+
+# Left-click toggles do-not-disturb. dunstctl is synchronous, so the
+# click-triggered re-run below already reflects the new state — no pkill needed.
+case $BLOCK_BUTTON in
+    1) dunstctl set-paused toggle ;;
+esac
+
+if [ "$(dunstctl is-paused)" = "true" ]; then
+    echo "$ICON_MUTED DND"   # full_text
+    echo "$ICON_MUTED"       # short_text
+    echo "$COLOR_MUTED"      # color
+else
+    echo "$ICON_ACTIVE"      # full_text
+    echo "$ICON_ACTIVE"      # short_text
+    echo "$COLOR_ACTIVE"     # color
+fi

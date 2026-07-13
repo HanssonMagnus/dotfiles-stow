@@ -119,6 +119,12 @@ command=~/.config/i3blocks/my_blocks/redshift/redshift
 interval=once
 signal=13
 
+## Dunst — toggle do-not-disturb (mute/unmute all notifications)
+[dunst]
+command=~/.config/i3blocks/my_blocks/dunst/dunst
+interval=once
+signal=14
+
 ## Date Time
 ##
 [time]
