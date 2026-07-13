@@ -1,4 +1,17 @@
 #!/usr/bin/env bash
+# Keyboard layout indicator + toggle.
+# Left-click switches between the us (altgr-intl) and se layouts.
 
-#setxkbmap -query | awk 'FNR==3 {print " " $2}'
-setxkbmap -query | grep layout | awk '{print $2}'
+current=$(setxkbmap -query | grep layout | awk '{print $2}')
+
+case $BLOCK_BUTTON in
+    1)  if [ "$current" = "us" ]; then
+            setxkbmap se
+        else
+            setxkbmap -layout us -variant altgr-intl
+        fi
+        current=$(setxkbmap -query | grep layout | awk '{print $2}')
+        ;;
+esac
+
+echo "$current"
