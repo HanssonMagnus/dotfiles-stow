@@ -125,6 +125,11 @@ command=~/.config/i3blocks/my_blocks/dunst/dunst
 interval=once
 signal=14
 
+## Lock — click to lock the screen (i3lock)
+[lock]
+command=~/.config/i3blocks/my_blocks/lock/lock
+interval=once
+
 ## Date Time
 ##
 [time]

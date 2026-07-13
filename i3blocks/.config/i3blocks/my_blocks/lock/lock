@@ -1,0 +1,10 @@
+#!/bin/bash
+# Lock button — left-click locks the screen with i3lock.
+# Same lock command as the entry in ~/bin/dmenu_commands.
+# cf. sibling action/toggle blocks: dunst, nosleep.
+
+case $BLOCK_BUTTON in
+    1) i3lock --color=000000 ;;
+esac
+
+echo "🔒"
