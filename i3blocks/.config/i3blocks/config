@@ -130,6 +130,16 @@ signal=14
 [time]
 command=date '+%Y-%m-%d %H:%M:%S'
 interval=1
+
+## Spacer — keeps [time] from being the last block so i3bar draws the clock's
+## normal right-hand separator (matching the faint dividers between blocks).
+## Prints a zero-width space (U+200B). Octal escape, not \x: i3blocks runs
+## commands via dash, whose printf supports \nnn octal but not \x hex.
+[edge_sep]
+command=printf '\342\200\213'
+interval=once
+separator=false
+separator_block_width=0
 #
 ## Generic media player support
 ##
