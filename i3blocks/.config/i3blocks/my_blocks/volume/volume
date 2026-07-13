@@ -74,13 +74,17 @@ volume() {
 
 format() {
   
-  perl_filter='if (/.*\[(\d+%)\] (\[(-?\d+.\d+dB)\] )?\[(on|off)\]/)'
-  perl_filter+='{CORE::say $4 eq "off" ? "🔇" : "🔊 '
-  # If dB was selected, print that instead
-  perl_filter+=$([[ $STEP = *dB ]] && echo '$3' || echo '$1')
-  perl_filter+='"; exit}'
-  output=$(perl -ne "$perl_filter")
-  echo "$LABEL$output"
+  # Parse the mixer line into "<state> <percent>", e.g. "off 80%" or "on 80%".
+  local parsed state pct
+  parsed=$(perl -ne 'if (/.*\[(\d+%)\] (\[(-?\d+.\d+dB)\] )?\[(on|off)\]/){print "$4 $1"; exit}')
+  state=${parsed%% *}
+  pct=${parsed##* }
+  if [ "$state" = "off" ]; then
+    # Muted: show MUTE in gruvbox red so it stands out; min_width keeps width steady.
+    printf '🔇 MUTE\n🔇 MUTE\n#FB4934\n'
+  else
+    printf '🔊 %s\n🔊 %s\n' "$pct" "$pct"
+  fi
 }
 
 #------------------------------------------------------------------------
