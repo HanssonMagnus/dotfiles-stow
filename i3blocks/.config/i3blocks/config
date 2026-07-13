@@ -32,13 +32,12 @@ markup=none
 # Key layout
 [key_layout]
 command=~/.config/i3blocks/my_blocks/keyboard_layout/keyboard_layout
-label=Layout:
+label=⌨️
 interval=30
 
 # Volume
 [volume]
 command=~/.config/i3blocks/my_blocks/volume/volume
-label=VOL:
 interval=once
 signal=10
 
@@ -52,7 +51,7 @@ signal=10
 ## Memory usage
 [memory]
 command=~/.config/i3blocks/my_blocks/memory/memory
-label=MEM:
+label=🐏
 separator=false
 interval=30
 #
@@ -64,14 +63,14 @@ interval=30
 [disk]
 #command=$SCRIPT_DIR/disk
 command=~/.config/i3blocks/my_blocks/disk/disk
-label=HOME:
+label=🏠
 #DIR=/mnt/data
 interval=30
 #
 ## Temperature
 [temperature]
 command=~/.config/i3blocks/my_blocks/temperature/temperature
-label=TEMP:
+label=🌡️
 interval=10
 #
 ## CPU usage
@@ -80,9 +79,9 @@ interval=10
 ## see the script for details.
 [cpu_usage]
 command=~/.config/i3blocks/my_blocks/cpu_usage/cpu_usage
-label=CPU
+label=🧠
 interval=10
-min_width=CPU 100.00%
+min_width=🧠 100.00%
 ##separator=false
 #
 ## Battery indicator
