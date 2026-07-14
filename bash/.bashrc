@@ -189,9 +189,5 @@ if [ -f '/home/magnus/Downloads/google-cloud-sdk/completion.bash.inc' ]; then . 
 ###################################################################################
 # Trudy secrets / env
 ###################################################################################
-[ -f ~/API_KEYS/receptiviti.env ] && . ~/API_KEYS/receptiviti.env
-[ -f ~/API_KEYS/shopkeeper.env ]   && . ~/API_KEYS/shopkeeper.env
-[ -f ~/API_KEYS/llms.env ]         && . ~/API_KEYS/llms.env
-[ -f ~/API_KEYS/insight_iq.env ]   && . ~/API_KEYS/insight_iq.env
-[ -f ~/API_KEYS/trudy.env ]   && . ~/API_KEYS/trudy.env
+[ -f ~/API_KEYS/api_keys.env ] && . ~/API_KEYS/api_keys.env
 
