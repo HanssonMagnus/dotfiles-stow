@@ -1,20 +1,17 @@
 # memory
 
-Show memory usage. Accepts instance "mem" or "swap".
+Show memory usage as `used/total` (GiB) with percentage, recolouring at
+>70/80/90%. Reports RAM by default, or swap when the block instance is `swap`.
 
-![](memory.png)
+## Dependencies
 
-# Config
+None — reads `/proc/meminfo` directly.
 
-```
+## Config
+
+```ini
 [memory]
-command=$SCRIPT_DIR/memory
-label=MEM
+command=~/.config/i3blocks/my_blocks/memory/memory
+label=🐏
 interval=30
-
-#[memory]
-#command=$SCRIPT_DIR/memory
-#label=SWAP
-#instance=swap
-#interval=30
 ```

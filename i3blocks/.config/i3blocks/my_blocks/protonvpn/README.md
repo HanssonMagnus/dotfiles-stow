@@ -7,7 +7,7 @@ disconnects if already connected).
 When connected, shows `🌐 <server> in <location>` in green (e.g. `🌐 SE#370 in
 Stockholm, Sweden`). When disconnected, shows `🌐 not connected` in grey.
 
-# Design
+## Design
 
 VPN state can change from outside the block (e.g. `protonvpn connect` typed
 directly in a terminal), so the block polls rather than only updating on
@@ -28,15 +28,15 @@ subprocess cost. `protonvpn status` is only actually invoked when:
 and the `proton0` interface never goes down, the block won't notice the new
 server until the 5-minute cache refresh or a manual click.
 
-# Dependencies
+## Dependencies
 
 * `protonvpn` — the official ProtonVPN CLI, logged in (`protonvpn signin`)
 
-# Config
+## Config
 
-```
+```ini
 [protonvpn]
-command=$SCRIPT_DIR/protonvpn
+command=~/.config/i3blocks/my_blocks/protonvpn/protonvpn
 interval=3
 signal=12
 ```

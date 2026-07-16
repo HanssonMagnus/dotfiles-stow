@@ -1,19 +1,24 @@
 # disk
 
-Show disk usage. The directory defaults to $HOME if the instance is not
-specified. The script may be called with an optional argument to set the
-alert (defaults to 10 for 10%).
-The script also accepts the flag `-n` to allow checking the disk usage of network devices, 
-which is disabled by default.
+Show free space on `$HOME` (or the directory set via `DIR` / the block
+instance). The text turns red when free space drops below `ALERT_LOW`
+(default 10%).
 
+## Dependencies
 
-# Config
+- `df` — from coreutils (standard).
 
-```
+## Config
+
+```ini
 [disk]
-command=$SCRIPT_DIR/disk
-LABEL=HOME 
-#DIR=$HOME
-#ALERT_LOW=10
+command=~/.config/i3blocks/my_blocks/disk/disk
+label=🏠
 interval=30
 ```
+
+## Notes
+
+Pass `-n` to also report network filesystems (skipped by default). `DIR` sets
+the directory to check (defaults to `$HOME`); `ALERT_LOW` sets the red
+threshold.

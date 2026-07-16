@@ -18,7 +18,7 @@ Turning it off always resets to neutral, and turning it back on always starts
 fresh at the 3500K default — it does not resume whatever temperature you'd
 scrolled to before switching it off.
 
-# Design
+## Design
 
 `redshift -O <temp>` is a one-shot manual override, not a daemon — unlike
 `nosleep`, there's no background process or PID to check for current state.
@@ -41,16 +41,16 @@ the gamma ramps outside of this block (e.g. a monitor hotplug, or running
 `rson`/`rsoff` manually from a terminal) the block's on-screen state can drift
 out of sync with the actual display until you next click or scroll it.
 
-# Dependencies
+## Dependencies
 
 * `redshift` — the CLI (also used by the `rson`/`rsoff` aliases in
   `bash/.bash_aliases`)
 
-# Config
+## Config
 
-```
+```ini
 [redshift]
-command=$SCRIPT_DIR/redshift
+command=~/.config/i3blocks/my_blocks/redshift/redshift
 interval=once
 signal=13
 ```

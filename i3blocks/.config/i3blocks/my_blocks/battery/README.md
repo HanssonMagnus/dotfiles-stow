@@ -1,20 +1,18 @@
 # battery
 
-Show battery info.
+Show battery status: charge percentage, `CHR`/`DIS` state and remaining time,
+turning red (and urgent) below 5%. On a desktop with no battery the script
+prints nothing, so the block simply disappears.
 
-![](battery.png)
+## Dependencies
 
-# Dependencies
+- `acpi` — reads battery state (`acpi -b`).
 
-* `acpi`
+## Config
 
-# Config
-
-```
+```ini
 [battery]
-command=$SCRIPT_DIR/battery
+command=~/.config/i3blocks/my_blocks/battery/battery
+label=⚡
 interval=30
-LABEL=BAT
-#LABEL=⚡
-#BAT_NUMBER=0
 ```

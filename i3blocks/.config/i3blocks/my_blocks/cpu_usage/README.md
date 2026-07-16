@@ -1,25 +1,23 @@
 # cpu_usage
 
-Show CPU usage.
+Show CPU usage as `100 − %idle` (from `mpstat`), recolouring the text at the
+warn/critical thresholds (normal is gruvbox `#EBDBB2`).
 
-![](cpu_usage.png)
+## Dependencies
 
-# Dependencies
+- `mpstat` — from the `sysstat` package.
 
-* `mpstat`
+## Config
 
-# Config
-
-```
+```ini
 [cpu_usage]
-command=$SCRIPT_DIR/cpu_usage
+command=~/.config/i3blocks/my_blocks/cpu_usage/cpu_usage
+label=🧠
 interval=10
-LABEL=CPU 
-#min_width=CPU: 100.00%
-#T_WARN=50
-#T_CRIT=80
-#DECIMALS=2
-#COLOR_NORMAL=#EBDBB2
-#COLOR_WARN=#FFFC00
-#COLOR_CRIT=#FF0000
+min_width=🧠 100.00%
 ```
+
+## Notes
+
+The script accepts `-w`/`-c` threshold flags and `-d` for decimal places.
+`min_width` reserves room for the widest value so the block doesn't jitter.

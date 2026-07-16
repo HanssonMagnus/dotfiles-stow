@@ -1,52 +1,28 @@
 # volume
 
-Shows the current system volume. The first parameter sets the step (and units
-to display). The second parameter overrides the mixer selection.
-See the script for details.
+Show the system volume as `🔊 <pct>`. **Left- or right-click toggles mute**
+(muted shows `🔇 MUTE` in red); **scroll** up/down changes the volume in 5%
+steps.
 
-Scrolling on the block changes the volume. Right clicking toggles mute.
+## Dependencies
 
-![](volume.png)
+- `amixer` — from `alsa-utils` (also drives PulseAudio/PipeWire via the `pulse` mixer).
+- `perl` — parses the mixer state.
 
-# Usage
+## Config
 
-This block can be run on an interval or by signal. To run the block using a
-signal, it is recommended to add the following to your i3 config.
-
-```
-# change volume or toggle mute
-bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks 
-bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
-bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
-```
-
-where the number `10` in `-RTMIN+10` can be replaced to another signal number,
-as long as it agrees what you put for `signal=` in your i3blocks config.
-
-
-# Config
-
-```
+```ini
 [volume]
-command=$SCRIPT_DIR/volume
-#LABEL=♪ 
-LABEL=VOL 
+command=~/.config/i3blocks/my_blocks/volume/volume
+min_width=🔊 100%
 interval=once
 signal=10
-#STEP=5%
-#MIXER=[determined automatically]
-#SCONTROL=[determined automatically]
-#NATURAL_MAPPING=0
 ```
-MIXER is determined automatically: "pulse" is used when PulseAudio or a
-PulseAudio-compatible server (e.g. PipeWire with pipewire-pulse) is available,
-"jackplug" when JACK is loaded, and "default" otherwise.
 
-To override: for PulseAudio/PipeWire users set MIXER="pulse", for Jack/Jack2
-users set MIXER="jackplug", for ALSA users use "default" or "hw:#" where # is
-the card number.
+## Notes
 
-For a list of available SCONTROL options, use `amixer -D $MIXER scontrols`.
-
-If `NATURAL_MAPPING` is set to a non-zero value, the `-M` flag is used for `amixer`, enabling
-a volume mapping more natural for the human ear, as used in alsamixer.
+The 🔊/🔇 icons and the red `#FB4934` mute colour are emitted by the script, so
+there is no `label=`; `min_width` keeps the block a fixed width. The mixer is
+auto-detected — `pulse` for PulseAudio or pipewire-pulse, `jackplug` for JACK,
+otherwise `default` — and can be overridden via the `MIXER`/`SCONTROL` env vars.
+Set `NATURAL_MAPPING=1` to use amixer's `-M` (alsamixer-style) scaling.
