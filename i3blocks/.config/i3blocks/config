@@ -39,7 +39,7 @@ interval=30
 [volume]
 command=~/.config/i3blocks/my_blocks/volume/volume
 min_width=🔊 100%
-interval=once
+interval=5
 signal=10
 
 # Volume
